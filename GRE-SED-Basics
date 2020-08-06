@@ -1,0 +1,35 @@
+##GREP and SED Basics to search for specific word in files using grep on dir and subdirs, then replace file via sed
+
+WORKING RESOLUTION with echo testing:
+
+1.)on root directory
+Branch: update-appid-tag
+grep -or "#AppId" 'Directory/DIR'
+
+2.) Per directory (TRY APPENDING TO TXT FILE)
+#grep -or "#AppId" 'Directory/DIR' | cut -d ' ' -f 5-
+#grep -or "#AppId" 'Directory/DIR' | awk '{print $(NF - 1)}'
+#for i in `grep -or "#AppId" 'Directory/DIR'`; do echo $i | cut -d ' ' -f 5-
+##############################
+
+## Grep the #AppID on multiple subdirectories under current directory and print on last data which is #AppId
+grep -or "#AppId" 'Directory/DIR' | awk -F: '{print $(NF -i)}'
+grep -or "#AppId" . | awk -F: '{print $(NF -i)}'
+
+##############################
+##ACTUAL RESO : Change and replace #AppId from current directory and subdirectories to AppID with the exclusion of .git folder with #AppId
+
+##Actual replacement script
+for i in `egrep -or "#AppId" . | grep -or --exclude-dir=.git '#AppId' .| awk -F: '{print $1}'`; do sed -i 's/#AppId/AppID/g' $i; done
+
+#TEST ON ECHO;
+for i in `egrep -or "#AppId" . | grep -or --exclude-dir=.git '#AppId' .| awk -F: '{print $1}'`; do echo $i; done
+
+#OR Shorter version on current DIR:
+for i in `grep -or "#AppId" . | awk -F: '{print $1}'`; do sed -i 's/#AppId/AppID/g' $i; done
+
+#Try on echo
+for i in `grep -or --exclude-dir=.git '#AppId' . | awk -F: '{print $1}'` ; do echo $i; done
+
+#Actual replacement with exclusion of folder .git with #AppId specific word
+for i in `grep -or --exclude-dir=.git '#AppId' . | awk -F: '{print $1}'` ; do sed -i 's/#AppId/AppID/g' $i; done
