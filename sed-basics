@@ -1,0 +1,17 @@
+##SED BASICS
+## find word1 and replace with word2 using sed ##
+sed -i 's/word1/word2/g' input
+
+## you can change the delimiter to keep syntax simple ##
+sed -i 's+word1+word2+g' input
+sed -i 's_word1_word2_g' input
+
+## you can add I option to GNU sed to case insensitive search ##
+sed -i 's/word1/word2/gI' input
+sed -i 's_word1_word2_gI' input
+
+## Delete the line with the same word ##
+sed -i '/<word>/d' <file> 
+
+## Search for word on current directory
+sed -n '/word/p' .
